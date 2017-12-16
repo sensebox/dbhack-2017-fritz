@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Location;
 
@@ -26,12 +27,16 @@ class LocationsController extends Controller
      */
     public function store(Request $request)
     {
+        if (Location::where('name', '=', $request['name'])->exists()) {
+            return new JsonResponse('location with this name already stored', 422);
+        }
+
         $location = new Location();
         $location->name = $request['name'];
         $location->latitude = round($request['latitude'], 5);
         $location->longitude = round($request['longitude'], 5);
         $location->save();
-        
+
         return $location;
     }
 
@@ -74,7 +79,7 @@ class LocationsController extends Controller
         $location = Location::findOrFail($id);
         $outgoing = [];
         $tickets = $location->pointOfDepartureFor;
-       
+
         foreach ($tickets as $ticket) {
             $outgoing[] = ['latitude' => $ticket->destination->latitude, 'longitude' => $ticket->destination->longitude];
         }
@@ -87,7 +92,7 @@ class LocationsController extends Controller
         $location = Location::findOrFail($id);
         $incoming = [];
         $tickets = $location->destinationFor;
-       
+
         foreach ($tickets as $ticket) {
             $incoming[] = ['latitude' => $ticket->pointOfDeparture->latitude, 'longitude' => $ticket->pointOfDeparture->longitude];
         }
