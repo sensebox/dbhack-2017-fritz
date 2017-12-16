@@ -51,12 +51,12 @@ class TicketsController extends Controller
         $ticket->destination_id = $request['destination_id'];
 
         // not working? ignoring image for now
-        // if(!Input::hasFile('image')) {
-        //     return new JsonResponse('url encoded image required', 422);
-        // }
+        if(!Input::hasFile('image')) {
+            return new JsonResponse('url encoded image required', 422);
+        }
 
-        // $file = Input::file('image');
-        // $file->move('/img/tickets', $ticket->image);
+        $file = Input::file('image');
+        $file->move('/img/tickets', $ticket->image);
 
         $this->update($request, $ticket);
     }
