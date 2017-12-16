@@ -56,7 +56,7 @@ class TicketsController extends Controller
         }
 
         $file = Input::file('image');
-        $file->move('/img/tickets', $ticket->image);
+        $file->move('public/img/tickets', $ticket->image);
 
         $this->update($request, $ticket);
     }
