@@ -45,7 +45,7 @@ class TicketsController extends Controller
 
         $ticket = new Ticket();
         $ticket->edit_count = -1;
-        update($request, $ticket);
+        $this->update($request, $ticket);
     }
 
     /**
@@ -136,8 +136,8 @@ class TicketsController extends Controller
             }
         }
 
-        if ($request['ocrText']) {
-            $ticket->ocrText = $request['ocrText'];
+        if ($request['ocr_text']) {
+            $ticket->ocrText = $request['ocr_text'];
         }
 
         $ticket->save();
