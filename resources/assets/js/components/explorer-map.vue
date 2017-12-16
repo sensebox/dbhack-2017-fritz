@@ -64,7 +64,7 @@ export default {
     addMarkers(locations) {
       locations.data.forEach(location => {
         var marker = new google.maps.Marker({
-          position: { lat: location.latitude, lng: location.longitude },
+          position: { lat: Number(location.latitude), lng: Number(location.longitude) },
           map: this.map,
           icon: config.markerIcon
         });
