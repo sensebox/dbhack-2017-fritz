@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Input;
 use App\Ticket;
 use App\Location;
 use App\Tag;
@@ -45,6 +47,16 @@ class TicketsController extends Controller
 
         $ticket = new Ticket();
         $ticket->edit_count = -1;
+        $ticket->signature = $request['signature'];
+        $ticket->image = $request['signature'] . '.jpg';
+
+        if(!Input::hasFile('image')) {
+            return new JsonResponse('url encoded image required', 422);
+        }
+
+        $file = Input::file('image');
+        $file->move('/img/tickets', $ticket->image);
+
         $this->update($request, $ticket);
     }
 
