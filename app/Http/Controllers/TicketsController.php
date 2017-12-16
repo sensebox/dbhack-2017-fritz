@@ -49,6 +49,7 @@ class TicketsController extends Controller
         $ticket->edit_count = -1;
         $ticket->signature = $request['signature'];
         $ticket->image = $request['signature'] . '.jpg';
+        $ticket->thumb = $request['signature'] . '.jpg';
 
         // if(!Input::hasFile('image')) {
         //     return new JsonResponse('url encoded image required', 422);
