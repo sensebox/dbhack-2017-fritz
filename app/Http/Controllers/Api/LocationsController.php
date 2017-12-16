@@ -27,8 +27,9 @@ class LocationsController extends Controller
      */
     public function store(Request $request)
     {
-        if (Location::where('name', '=', $request['name'])->exists()) {
-            return new JsonResponse('location with this name already stored', 422);
+        $oldLoc = Location::where('name', '=', $request['name'])->get();
+        if ($oldLoc) {
+            return $oldLoc;
         }
 
         $location = new Location();
