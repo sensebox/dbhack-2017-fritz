@@ -11,7 +11,7 @@ class TicketsController extends Controller
 {
     private function toCSV($tickets)
     {
-        $headings = ['ID', 'Signatur', 'Abfahrtsort', 'Ziel', 'Beschreibung', 'Kategorie', 'Klasse', 'Preis', 'Bearbeitungen', 'Änderungsdatum'];
+        $headings = ['ID', 'Signatur', 'Abfahrtsort', 'Ziel', 'Beschreibung', 'Kategorie', 'Klasse', 'Preis', 'Bearbeitungen', 'Änderungsdatum', 'Texterkennung', 'Datum'];
         $output = implode(',', $headings) . PHP_EOL;
         foreach ($tickets as $ticket) {
             $columns = [
@@ -24,7 +24,9 @@ class TicketsController extends Controller
                 $ticket->vehicleClass ? $ticket->vehicleClass->name : '',
                 $ticket->price ? $ticket->price : '',
                 $ticket->edit_count,
-                $ticket->updated_at
+                $ticket->updated_at,
+                $ticket->ocrText,
+                $ticket->date,
             ];
             $output.=  implode(',', $columns) . PHP_EOL;
         }
@@ -32,7 +34,7 @@ class TicketsController extends Controller
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="all_tickets_export.csv"',
         );
-          
+
         return Response::make($output, 200, $headers);
     }
 

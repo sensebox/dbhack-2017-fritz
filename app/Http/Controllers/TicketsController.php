@@ -39,7 +39,13 @@ class TicketsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd('store ticket');
+
+        // TODO: upload image, csrf text?
+
+        $ticket = new Ticket();
+        $ticket->edit_count = -1;
+        update($request, $ticket);
     }
 
     /**
@@ -91,14 +97,14 @@ class TicketsController extends Controller
             $longitude = round($request['point_of_departure_longitude'], 5);
             $pointOfDeparture = Location::
                 where('latitude', $latitude)
-                ->where('longitude', $longitude)->first();    
+                ->where('longitude', $longitude)->first();
             if ($pointOfDeparture == null) {
                 $pointOfDeparture = new Location();
                 $pointOfDeparture->name = $request['point_of_departure_name'];
                 $pointOfDeparture->latitude = $latitude;
                 $pointOfDeparture->longitude = $longitude;
                 $pointOfDeparture->save();
-            } 
+            }
             $ticket->point_of_departure_id = $pointOfDeparture->id;
         }
 
@@ -108,14 +114,14 @@ class TicketsController extends Controller
             $longitude = round($request['destination_longitude'], 5);
             $destination = Location::
                 where('latitude', $latitude)
-                ->where('longitude', $longitude)->first();    
+                ->where('longitude', $longitude)->first();
             if ($destination == null) {
                 $destination = new Location();
                 $destination->name = $request['destination_name'];
                 $destination->latitude = $latitude;
                 $destination->longitude = $longitude;
                 $destination->save();
-            } 
+            }
             $ticket->destination_id = $destination->id;
         }
 
@@ -129,7 +135,11 @@ class TicketsController extends Controller
                 $user->save();
             }
         }
-    
+
+        if ($request['ocrText']) {
+            $ticket->ocrText = $request['ocrText'];
+        }
+
         $ticket->save();
 
         // keep track of edited tickets in session

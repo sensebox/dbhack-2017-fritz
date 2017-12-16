@@ -8,6 +8,9 @@ use App\Category;
 
 class Ticket extends Model
 {
+    protected $primaryKey = 'name';
+    public $incrementing = false;
+
     public function pointOfDeparture()
     {
         return $this->belongsTo(Location::class, 'point_of_departure_id');
