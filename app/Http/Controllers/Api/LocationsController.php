@@ -27,7 +27,7 @@ class LocationsController extends Controller
      */
     public function store(Request $request)
     {
-        $oldLoc = Location::where('name', '=', $request['name'])->get();
+        $oldLoc = Location::where('name', '=', $request['name'])->first();
         if ($oldLoc) {
             return $oldLoc;
         }
