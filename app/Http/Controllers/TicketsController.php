@@ -41,16 +41,16 @@ class TicketsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd('store ticket');
-
-        // TODO: upload image, csrf text?
-
         $ticket = new Ticket();
         $ticket->edit_count = -1;
         $ticket->signature = $request['signature'];
         $ticket->image = $request['signature'] . '.jpg';
-        $ticket->thumb = $request['signature'] . '.jpg';
+        $ticket->thumb = $request['signature'] . '.jpg'; // @HACK
 
+        $ticket->point_of_departure_id = $request['point_of_departure_id'];
+        $ticket->destination_id = $request['destination_id'];
+
+        // not working? ignoring image for now
         // if(!Input::hasFile('image')) {
         //     return new JsonResponse('url encoded image required', 422);
         // }
